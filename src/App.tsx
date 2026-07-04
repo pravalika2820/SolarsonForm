@@ -73,22 +73,27 @@ function App() {
     {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(form)
+      body: JSON.stringify(form),
     }
   )
 
-  console.log("Status:", response.status)
+  console.log('Status:', response.status)
 
   const text = await response.text()
-  console.log("Response:", text)
+  console.log('Response:', text)
 
+  if (response.ok) {
+    setStatus('success')
+    setForm(initialForm)
+  } else {
+    setStatus('error')
+  }
 } catch (error) {
   console.error(error)
-}
-  }
-  //changed//
+  setStatus('error')
+}}
 
   return (
     <main className="page-shell">
