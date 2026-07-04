@@ -38,13 +38,9 @@ const callSlots = [
   '6 PM - 8 PM',
 ]
 
-const googleSheetWebAppUrl = ''
-
 function App() {
   const [form, setForm] = useState<LeadForm>(initialForm)
   const [status, setStatus] = useState<FormStatus>('idle')
-
-  const isConfigured = googleSheetWebAppUrl.trim().length > 0
 
   const canSubmit = useMemo(
     () =>
@@ -62,31 +58,35 @@ function App() {
   }
 
   const submitLead = async (event: FormEvent<HTMLFormElement>) => {
-  event.preventDefault();
+    event.preventDefault()
 
-  console.log("SUBMIT CLICKED");
-  console.log(form);
+    if (!canSubmit) {
+      setStatus('error')
+      return
+    }
 
-  try {
-    const response = await fetch("http://localhost:5000/api/enquiry", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(form),
-    });
+    setStatus('submitting')
 
-    const data = await response.json();
+    try {
+      const response = await fetch('http://localhost:5000/api/enquiry', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(form),
+      })
 
-    console.log("SUCCESS", data);
+      const data = await response.json()
+      console.log('SUCCESS', data)
 
-    setForm(initialForm);
-    setStatus("success");
-  } catch (error) {
-    console.error("ERROR", error);
-    setStatus("error");
+      setForm(initialForm)
+      setStatus('success')
+    } catch (error) {
+      console.error('ERROR', error)
+      setStatus('error')
+    }
   }
-};
+
   return (
     <main className="page-shell">
       <section className="intro-panel" aria-labelledby="form-title">
