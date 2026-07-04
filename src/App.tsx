@@ -68,24 +68,27 @@ function App() {
     setStatus('submitting')
 
     try {
-      const response = await fetch('https://solarson-form-details.vercel.app/api/enquiry', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(form),
-      })
-
-      const data = await response.json()
-      console.log('SUCCESS', data)
-
-      setForm(initialForm)
-      setStatus('success')
-    } catch (error) {
-      console.error('ERROR', error)
-      setStatus('error')
+  const response = await fetch(
+    'https://solarson-app.onrender.com/api/enquiry',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(form)
     }
+  )
+
+  console.log("Status:", response.status)
+
+  const text = await response.text()
+  console.log("Response:", text)
+
+} catch (error) {
+  console.error(error)
+}
   }
+  //changed//
 
   return (
     <main className="page-shell">
