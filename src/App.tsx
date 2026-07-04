@@ -69,7 +69,7 @@ function App() {
 
     try {
   const response = await fetch(
-    'https://solarson-app.onrender.com/api/enquiry',
+    'https://solarsonform-details.onrender.com/api/enquiry',
     {
       method: 'POST',
       headers: {
