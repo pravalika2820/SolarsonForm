@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import type { FormEvent } from 'react'
-import { useNavigate } from 'react-router-dom'
+
 import './App.css'
 
 type FormStatus = 'idle' | 'submitting' | 'success' | 'error'
@@ -43,7 +43,7 @@ const callSlots = [
 function App() {
   const [form, setForm] = useState<LeadForm>(initialForm)
   const [status, setStatus] = useState<FormStatus>('idle')
-  const navigate = useNavigate()
+  
 
   const canSubmit = useMemo(
     () =>
@@ -218,12 +218,7 @@ function App() {
   {status === 'submitting' ? 'Saving...' : 'Submit Enquiry'}
 </button>
 
-<button
-  type="button"
-  onClick={() => navigate('/details')}
->
-  View Details
-</button>
+
 
         {status === 'success' && (
           <p className="message success">
