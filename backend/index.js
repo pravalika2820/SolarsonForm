@@ -14,8 +14,9 @@ pool.query('SELECT NOW()')
   .then(res => console.log('DB Connected Successfully'))
   .catch(err => console.error('DB Connection Error:', err));
 app.post('/api/enquiry', async (req, res) => {
-    console.log("POST HIT");
-    console.log(req.body);
+  console.log("POST HIT");
+  console.log(req.body);
+
   try {
     const {
       customerName,
@@ -53,44 +54,19 @@ app.post('/api/enquiry', async (req, res) => {
 
     const result = await pool.query(query, values);
 
-console.log("INSERTED ROW:");
-console.log(result.rows[0]);
-
-const count = await pool.query(
-  "SELECT COUNT(*) FROM userdetails"
-);
-
-console.log("TOTAL ROWS:", count.rows[0].count);
-
     res.status(201).json({
       success: true,
       message: 'Enquiry saved successfully',
       data: result.rows[0],
     });
+
   } catch (error) {
     console.error('Insert Error:', error);
+    console.error('Error Message:', error.message);
 
     res.status(500).json({
       success: false,
-      message: 'Failed to save enquiry',
-    });
-  }
-});
-
-app.get('/api/enquiries', async (req, res) => {
-    
-  try {
-    const result = await pool.query(
-      'SELECT * FROM userdetails ORDER BY created_at DESC'
-    );
-
-    res.json(result.rows);
-  } catch (error) {
-    console.error(error);
-
-    res.status(500).json({
-      success: false,
-      message: 'Failed to fetch enquiries',
+      message: error.message,
     });
   }
 });
