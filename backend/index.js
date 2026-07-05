@@ -53,6 +53,15 @@ app.post('/api/enquiry', async (req, res) => {
 
     const result = await pool.query(query, values);
 
+console.log("INSERTED ROW:");
+console.log(result.rows[0]);
+
+const count = await pool.query(
+  "SELECT COUNT(*) FROM userdetails"
+);
+
+console.log("TOTAL ROWS:", count.rows[0].count);
+
     res.status(201).json({
       success: true,
       message: 'Enquiry saved successfully',
