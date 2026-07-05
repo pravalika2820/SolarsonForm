@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import type { FormEvent } from 'react'
+import { useNavigate } from 'react-router-dom'
 import './App.css'
 
 type FormStatus = 'idle' | 'submitting' | 'success' | 'error'
@@ -44,6 +45,7 @@ function App() {
   const [status, setStatus] = useState<FormStatus>('idle')
   const [enquiries, setEnquiries] = useState<any[]>([])
 const [showDetails, setShowDetails] = useState(false)
+const navigate = useNavigate()
 
   const canSubmit = useMemo(
     () =>
@@ -233,8 +235,7 @@ const loadEnquiries = async () => {
 
 <button
   type="button"
-  onClick={loadEnquiries}
-  style={{ marginTop: '10px' }}
+  onClick={() => navigate('/details')}
 >
   View Details
 </button>
