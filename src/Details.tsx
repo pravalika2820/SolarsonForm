@@ -5,11 +5,22 @@ function Details() {
   const [enquiries, setEnquiries] = useState<any[]>([])
 
   useEffect(() => {
-    fetch('https://solarsonform-details.onrender.com/api/enquiries')
-      .then((res) => res.json())
-      .then((data) => setEnquiries(data))
-      .catch((err) => console.error(err))
-  }, [])
+  fetch('https://solarsonform-details.onrender.com/api/enquiries')
+    .then(async (res) => {
+      console.log('STATUS:', res.status)
+
+      const text = await res.text()
+      console.log('RAW RESPONSE:', text)
+
+      try {
+        const data = JSON.parse(text)
+        setEnquiries(data)
+      } catch (e) {
+        console.error('Not JSON')
+      }
+    })
+    .catch((err) => console.error(err))
+}, [])
 
   return (
     <div style={{ padding: '20px' }}>
