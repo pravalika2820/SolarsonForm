@@ -10,13 +10,17 @@ app.use(express.json());
 app.get('/', (req, res) => {
   res.send('Solarson Backend Running');
 });
-pool.query('SELECT NOW()')
-  .then(res => console.log('DB Connected Successfully'))
-  .catch(err => console.error('DB Connection Error:', err));
-app.post('/api/enquiry', async (req, res) => {
-  console.log("POST HIT");
-  console.log(req.body);
 
+// DB Connection Check
+pool.query('SELECT NOW()')
+  .then(() => console.log('DB Connected Successfully'))
+  .catch(err => console.error('DB Connection Error:', err));
+
+
+// ======================
+// SAVE ENQUIRY
+// ======================
+app.post('/api/enquiry', async (req, res) => {
   try {
     const {
       customerName,
@@ -62,7 +66,6 @@ app.post('/api/enquiry', async (req, res) => {
 
   } catch (error) {
     console.error('Insert Error:', error);
-    console.error('Error Message:', error.message);
 
     res.status(500).json({
       success: false,
@@ -71,8 +74,32 @@ app.post('/api/enquiry', async (req, res) => {
   }
 });
 
-const PORT =5000;
 
+// ======================
+// GET ALL ENQUIRIES
+// ======================
+app.get('/api/enquiries', async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT *
+      FROM userdetails
+      ORDER BY customer_name ASC
+    `);
+
+    res.status(200).json(result.rows);
+
+  } catch (error) {
+    console.error('Fetch Error:', error);
+
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
+
+const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

@@ -43,9 +43,7 @@ const callSlots = [
 function App() {
   const [form, setForm] = useState<LeadForm>(initialForm)
   const [status, setStatus] = useState<FormStatus>('idle')
-  const [enquiries, setEnquiries] = useState<any[]>([])
-const [showDetails, setShowDetails] = useState(false)
-const navigate = useNavigate()
+  const navigate = useNavigate()
 
   const canSubmit = useMemo(
     () =>
@@ -100,20 +98,7 @@ const navigate = useNavigate()
   console.error(error)
   setStatus('error')
 }}
-const loadEnquiries = async () => {
-  try {
-    const response = await fetch(
-      'https://solarsonform-details.onrender.com/api/enquiries'
-    )
 
-    const data = await response.json()
-
-    setEnquiries(data)
-    setShowDetails(true)
-  } catch (error) {
-    console.error(error)
-  }
-}
 
   return (
     <main className="page-shell">
@@ -252,50 +237,7 @@ const loadEnquiries = async () => {
           </p>
         )}
       </form>
-      {showDetails && (
-  <div
-    style={{
-      marginTop: '20px',
-      overflowX: 'auto',
-      width: '100%',
-    }}
-  >
-    <h2>Saved Enquiries</h2>
-
-    <table
-      border={1}
-      cellPadding={10}
-      style={{
-        width: '100%',
-        borderCollapse: 'collapse',
-      }}
-    >
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Phone</th>
-          <th>Bill</th>
-          <th>Property</th>
-          <th>District</th>
-          <th>Call Slot</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        {enquiries.map((item) => (
-          <tr key={item.id}>
-            <td>{item.customer_name}</td>
-            <td>{item.phone_number}</td>
-            <td>{item.power_bill}</td>
-            <td>{item.property_type}</td>
-            <td>{item.district}</td>
-            <td>{item.call_slot}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
-)}
+      
     </main>
   )
 }
